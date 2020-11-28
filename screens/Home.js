@@ -1,5 +1,5 @@
 import React,{useEffect,Component} from 'react';
-import {View,Text,Linking,Button, TouchableHighlight,StyleSheet,ScrollView,ImageBackground}from 'react-native'
+import {View,Text,Linking,Button, TouchableHighlight,StyleSheet,ScrollView,ImageBackground,YellowBox,TouchableWithoutFeedback}from 'react-native'
 import {Card, Icon,Image,Avatar} from 'react-native-elements';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerContentScrollView,DrawerItemList,DrawerItem } from '@react-navigation/drawer';
@@ -9,12 +9,10 @@ import{createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import Quiz1 from './Quiz1';
 import ContactUs from './ContactUs';
 import AboutUspage from './AboutUs'
-import MarioCard from '../components/MarioCard';
-import Header from '../components/Header';
+import RakingScreen from './Ranking'
+import History from './History'
 
-import { globalStyles } from '../globalStyle/style';
-import {easyImg, playStateImg, hardImg, normalImg} from '../shared/imageURL'
-
+import * as Animatable from 'react-native-animatable';
 
 const Tab = createBottomTabNavigator();
 function TabNavigatorScreen(){
@@ -32,8 +30,8 @@ function TabNavigatorScreen(){
         )
         }}/>
 
-      <Tab.Screen name="Profile" component={ProfileNavigatorScreen} options={{
-        title: "Profile",
+      <Tab.Screen name="Profile" component={History} options={{
+        title: "History",
         tabBarIcon:({focused})=>(
           <Icon 
           name='users'
@@ -41,7 +39,7 @@ function TabNavigatorScreen(){
           color='#f50' size={30} color={focused ? '#7cc' : '#ccc'}/>
         )
         }} />
-  <Tab.Screen name='Rank' component={RankNavigatorScreen}  options={{ title: 'Rank',
+  <Tab.Screen name='Rank' component={RakingScreen}  options={{ title: 'Rank',
 tabBarIcon:({focused})=>
 (
   <Icon name='trophy' type="font-awesome" color='#f50' size={30} color={focused ? '#7cc':"#ccc"}/>
@@ -53,7 +51,9 @@ tabBarIcon:({focused})=>
 
 const Stack = createStackNavigator();
 function QuizNavigatorScreen() {
+
   return (
+    
     <Stack.Navigator screenOptions={{
       headerStyle: { backgroundColor: '#64b5f6' },
       headerTintColor: '#fff',
@@ -83,24 +83,24 @@ function QuizScreen({navigation,route}) {
     <Card >
       <View style={{flexDirection:'row',marginBottom:10}}>
         {/* {route.params.data.user.givenName} */}
-  <Text style={{fontWeight:'bold'}} >Hello, Duy</Text>
+      <Text style={{fontWeight:'bold'}} >Hello, Duy</Text>
         
       </View>
       <Card.Divider/>
       <View style={styles.menuchoice}>
 
           <TouchableHighlight underlayColor="#f1f8e9" activeOpacity={0.6} onPress={()=>{navigation.navigate('Question')}} style={styles.menuchoice_details}>
-            <View>
-                <Icon name='gamepad'  type="font-awesome" />
+            <Animatable.View animation="fadeInUp" duration={1500} delay={800}>
+            <Icon name='gamepad'  type="font-awesome" />
                 <Text>Quiz</Text>
-            </View>
+            </Animatable.View>
           </TouchableHighlight>
 
           <TouchableHighlight underlayColor="#f1f8e9" activeOpacity={0.6} onPress={()=>{}} style={styles.menuchoice_details}>
-            <View>
+          <Animatable.View animation="fadeInDown" duration={1500} delay={800}>
                  <Icon name='star'  type="font-awesome" />
                   <Text>LeaderBoard</Text>
-            </View>
+            </Animatable.View>
           </TouchableHighlight>
 
       </View>
@@ -108,17 +108,17 @@ function QuizScreen({navigation,route}) {
       <View style={styles.menuchoice}>
 
         <TouchableHighlight underlayColor="#f1f8e9" activeOpacity={0.6} onPress={()=>{}} style={styles.menuchoice_details}>
-          <View>
+           <Animatable.View animation="fadeInDown" duration={1500} delay={800}>
               <Icon name='user'  type="font-awesome" />
               <Text>User Panel</Text>
-          </View>
+            </Animatable.View>
         </TouchableHighlight>
 
         <TouchableHighlight underlayColor="#f1f8e9" activeOpacity={0.6} onPress={()=>{}} style={styles.menuchoice_details}>
-          <View>
-              <Icon name='question'  type="font-awesome" />
+           <Animatable.View animation="fadeInUp" duration={1500} delay={800}>
+                <Icon name='question'  type="font-awesome" />
                 <Text>Help</Text>
-          </View>
+            </Animatable.View>
         </TouchableHighlight>
 
 </View>
@@ -129,40 +129,6 @@ function QuizScreen({navigation,route}) {
     </ScrollView>
    
   );
-}
-
-//Tach ra Component sau
-function ProfileNavigatorScreen() {
-  return (
-    
-    <View style={{textAlign: 'center', marginTop: 300, flexDirection:'row',alignItems: 'center',justifyContent: 'center',opacity:0.5}}>
-      <Icon name="info" size={30} title="Comming Soon !!!" />
-          {/*Icon Component*/}
-      <Text >
-       Comming Soon!!!
-      </Text>
-      
-    </View>
-  );
-}
-//Tach ra Component sau
-function RankNavigatorScreen(){
-  return (
-    <View>
-      <Card>
-        <Card.Title>Players Rank</Card.Title>
-        <Card.Divider/>
-        <View style={{textAlign: 'center', marginTop: 50, flexDirection:'row',alignItems: 'center',justifyContent: 'center',opacity:0.5}}>
-      <Icon name="info" size={30} title="Comming Soon !!!" />
-          {/*Icon Component*/}
-      <Text >
-       Comming Soon!!!
-      </Text>
-      
-    </View>
-      </Card>
-    </View>
-  )
 }
 
 const MainNavigator = createDrawerNavigator();
@@ -259,14 +225,26 @@ function ContactUsNavigator(){
   )
 }
 class Home extends Component {
-  
+  constructor(props){
+    super(props);
+    this.state={
+      data: this.props.route.params.data.user.name
+    };
+    YellowBox.ignoreWarnings(['VirtualizedLists should never be nested']);
+}
 
   render() {
-    return (      
-        <MainNavigatorScreen />
-        
-    
-      
+    const data= this.state.data;
+    if(data!=null) {
+      console.log(data);
+    }
+    else{
+      return false;
+    }
+    return (   
+             
+        <MainNavigatorScreen/>
+
     );
   }
 }
@@ -298,5 +276,6 @@ const styles = StyleSheet.create({
       alignItems:'center'
     }
 }
+
 )
 export default Home;

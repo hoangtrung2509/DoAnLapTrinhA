@@ -1,5 +1,5 @@
 import React, { useState,useEffect }  from 'react';
-import {Image, Text, View} from  'react-native';
+import {Image, Text, View,ActivityIndicator} from  'react-native';
 import { set } from 'react-native-reanimated';
 
 const Loading = () =>{

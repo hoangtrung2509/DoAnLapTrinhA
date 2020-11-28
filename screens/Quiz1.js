@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import { View,ImageBackground,Text } from 'react-native';
+import { View,ImageBackground,Text,ActivityIndicator } from 'react-native';
 
 import MarioCard from '../components/MarioCard';
 import Header from '../components/Header';
@@ -53,7 +53,10 @@ const Quiz1 = ({navigation}) =>{
         </View>
     )
     else return(
-        <Text>Loading........</Text>
+        <View style={{flex:1,justifyContent:'center'}}>
+                <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+        
     )
 }
 
