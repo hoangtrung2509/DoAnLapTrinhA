@@ -4,13 +4,13 @@ import { StyleSheet, Text, View,Button,ImageBackground, TouchableHighlight,Platf
 
 
 export const isAndroid = () => Platform.OS === 'android';
-
+export const isIOS = () => Platform.OS === 'ios';
 import * as Google from 'expo-google-app-auth'
 const Login=(props)=> {
 
   const SignInWithGoogle = async () => {
      return await Google.logInAsync({
-              clientId: isAndroid() ? '242605181936-8h6mavod7qdrq9c5o7tlck9aonh38itf.apps.googleusercontent.com':false,
+              clientId: isAndroid() ? '242605181936-8h6mavod7qdrq9c5o7tlck9aonh38itf.apps.googleusercontent.com': isIOS()?'242605181936-8n0kf6qp1t6mca6cnl0glc8kml601c4s.apps.googleusercontent.com' :false,
               scopes: ['profile', 'email'],
           })
         //   .then(data => console.log(data))
